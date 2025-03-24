@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: "COMP367-Docker"
+  name: "COMP367-Docker"
 
 steps:
 - task: Maven@3

@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: COMP367-Mac
 
 steps:
 - task: Maven@3

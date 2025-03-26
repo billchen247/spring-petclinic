@@ -11,7 +11,16 @@ pool:
   name: "COMP367-Docker"
 
 steps:
-- task: Maven@3
+- script: |
+    sudo apt update
+    sudo apt install -y maven
+    mvn -version
+  displayName: 'Install Maven'
+
+- script: mvn -version
+  displayName: 'Check Maven Version'
+  
+- task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'

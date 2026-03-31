@@ -8,7 +8,7 @@ trigger:
 
 pool:
   vmImage: "ubuntu-latest"
-  name: "COMP367-Docker"
+  #name: "COMP367-Docker"
 
 steps:
 - script: |

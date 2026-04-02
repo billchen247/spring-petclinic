@@ -452,4 +452,10 @@
       </build>
     </profile>
   </profiles>
+  <distributionManagement>
+  <repository>
+    <id>training-feed</id>
+    <url>https://pkgs.dev.azure.com/hchen247devopsdemo/_packaging/training-feed/maven/v1</url>
+  </repository>
+</distributionManagement>
 </project>

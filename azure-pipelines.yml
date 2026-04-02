@@ -89,6 +89,8 @@ stages:
   displayName: "Deploy to Azure Web App"
   dependsOn: Build
   condition: succeeded()
+  variables:
+    - group: jdk17webapp_var_group
   jobs:
   - deployment: DeployWebApp
     displayName: "Deploy to Azure"
@@ -117,17 +119,16 @@ stages:
  #               echo "Logged in identity:"
  #               az account show
 
-          variables:
-          - group: jdk17webapp_var_group
+          
 
           - script: |
-            if [ -z "$(publishProfile)" ]; then
-              echo "❌ publishProfile is EMPTY"
-              exit 1
-            else
-              echo "✅ publishProfile is loaded"
-            fi
-          displayName: "Check publishProfile variable"
+              if [ -z "$(publishProfile)" ]; then
+                echo "❌ publishProfile is EMPTY"
+                exit 1
+              else
+                echo "✅ publishProfile is loaded"
+              fi
+            displayName: "Check publishProfile variable"
 
           # Deploy to Azure Web App
           - task: AzureWebApp@1

@@ -108,5 +108,5 @@ stages:
             displayName: "Deploy to Web App"
             inputs:
               azureSubscription: 'azure-conn'   # <-- CHANGE THIS
-              appName: '<your-webapp-name>'     # <-- CHANGE THIS
+              appName: 'jdk17webapp'     # <-- CHANGE THIS
               package: '$(Pipeline.Workspace)/$(artifactName)/**/*.jar'

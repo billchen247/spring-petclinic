@@ -63,6 +63,6 @@ steps:
     goals: 'deploy'
     options: '-DskipTests'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
+    jdkVersionOption: '1.17'
     mavenAuthenticateFeed: false # This is key
     

@@ -68,14 +68,19 @@ stages:
         ls -R $(Build.ArtifactStagingDirectory)
       displayName: "Debug Artifact Contents"
 
-    # Publish artifact
-    - task: PublishBuildArtifacts@1
-      displayName: "Publish Artifact"
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: '$(artifactName)'
-        publishLocation: 'Container'
+    # Publish classic build artifact for old format
+#    - task: PublishBuildArtifacts@1
+#      displayName: "Publish Artifact"
+#      inputs:
+#        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#        ArtifactName: '$(artifactName)'
+#        publishLocation: 'Container'
 
+    - task: PublishPipelineArtifact@1
+      displayName: "Publish Pipeline Artifact for CD pipeline"
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: '$(artifactName)'
 
 # =========================
 # DEPLOY STAGE

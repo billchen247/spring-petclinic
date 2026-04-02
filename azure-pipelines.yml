@@ -108,6 +108,15 @@ stages:
               ls -R $(Pipeline.Workspace)
             displayName: "Debug Downloaded Artifact"
 
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'azure-conn'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                echo "Logged in identity:"
+                az account show
+                
           # Deploy to Azure Web App
           - task: AzureWebApp@1
             displayName: "Deploy to Web App"

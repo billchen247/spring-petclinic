@@ -135,7 +135,7 @@ stages:
             displayName: "Deploy to Web App"
             inputs:
               appType: 'webAppLinux'
-              publishProfile: '$(publishProfile)'
-              azureSubscription: 'azure-conn'   # <-- CHANGE THIS
-              appName: 'jdk17webapp'     # <-- CHANGE THIS
+              publishProfile: '$(publishProfile)' # for publish profile
+              # azureSubscription: 'azure-conn'   # <-- CHANGE THIS # for service connection
+              appName: 'jdk17webapp-fqe9bzf8a8ddbkct'     # <-- CHANGE THIS
               package: '$(Pipeline.Workspace)/$(artifactName)/**/*.jar'

@@ -30,8 +30,39 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/target/surefire-reports/*.xml'
+    
+- task: PublishCodeCoverageResults@2
+  inputs:
+    summaryFileLocation: 'target/site/jacoco/jacoco.xml'
+    pathToSources: 'src/main/java/com/training/example/jacocoexample'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/target'
+    Contents: '**/*.jar'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'spring-petclinic'
     publishLocation: 'Container'
+
+- task: MavenAuthenticate@0
+  inputs:
+    artifactsFeeds: 'training-feed'
+
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'deploy'
+    options: '-DskipTests'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
+    mavenAuthenticateFeed: false # This is key
+    

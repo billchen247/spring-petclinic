@@ -39,7 +39,7 @@ steps:
 - task: PublishCodeCoverageResults@2
   inputs:
     summaryFileLocation: 'target/site/jacoco/jacoco.xml'
-    pathToSources: 'src/main/java/com/training/example/jacocoexample'
+    pathToSources: 'src/main/java/'
 
 - task: CopyFiles@2
   inputs:

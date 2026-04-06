@@ -38,7 +38,7 @@
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.43</spring-format.version>
     <!-- SonarCloud Configuration -->
-    <sonar.projectKey>spring-petclinic</sonar.projectKey>
+    <sonar.projectKey>billchen247_spring_petclinic</sonar.projectKey>
     <sonar.organization>billchen247</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 

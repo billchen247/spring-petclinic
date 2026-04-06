@@ -110,6 +110,39 @@ stages:
               ls -R $(Pipeline.Workspace)
             displayName: "Debug Downloaded Artifact"
 
+          - script: |
+              JAR=$(find $(Pipeline.Workspace) -name "*.jar" | head -n 1)
+              if [ -z "$JAR" ]; then
+                echo "❌ No JAR found!"
+                exit 1
+              fi
+              echo "✅ Found JAR: $JAR"
+              mkdir -p $(Build.ArtifactStagingDirectory)/package
+              cp "$JAR" $(Build.ArtifactStagingDirectory)/package/app.jar
+              echo "✅ Created deployment packge $(Build.ArtifactStagingDirectory)/package/app.jar"
+              ls -l $(Build.ArtifactStagingDirectory)
+              if [ ! -f "$(Build.ArtifactStagingDirectory)/package/app.jar" ]; then
+                echo "❌ JAR copy failed!"
+                exit 1
+              fi
+            displayName: "Validate JAR exists"
+          
+          - task: ArchiveFiles@2
+            displayName: "Create ZIP package"
+            inputs:
+              rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/package'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+              replaceExistingArchive: true
+
+          - script: |
+              echo "=== ZIP CONTENT ==="
+              ls -l $(Build.ArtifactStagingDirectory)/app.zip
+              unzip -l $(Build.ArtifactStagingDirectory)/app.zip
+              
+            displayName: "Verify ZIP"
+            
  #         - task: AzureCLI@2
  #           inputs:
  #             azureSubscription: 'azure-conn'
@@ -130,12 +163,47 @@ stages:
               fi
             displayName: "Check publishProfile variable"
 
+
+          - script: |
+              echo "=== CURRENT DIR ==="
+              pwd
+          
+              echo "=== LIST ROOT ==="
+              ls -al
+          
+              echo "=== LIST WORKSPACE ==="
+              ls -al $(Pipeline.Workspace)
+          
+              echo "=== RECURSIVE LIST ==="
+              ls -R $(Pipeline.Workspace)
+          
+              echo "=== FIND ZIP ==="
+              find $(Pipeline.Workspace) -name "*.zip"
+          
+              FILE=$(find $(Pipeline.Workspace) -name "*.zip" | head -n 1)
+          
+              if [ -z "$FILE" ]; then
+                echo "❌ NO ZIP FOUND"
+                exit 1
+              fi
+          
+              echo "✅ ZIP FOUND: $FILE"
+              ls -l "$FILE"
+          
+              echo "=== TRY UNZIP ==="
+              unzip -l "$FILE" || echo "⚠️ unzip failed"
+            displayName: "FULL DEBUG ZIP"
+
           # Deploy to Azure Web App
           - task: AzureWebApp@1
             displayName: "Deploy to Web App"
             inputs:
-              appType: 'webApp'
+              #appType: 'webApp'
               # publishProfile: '$(publishProfile)' # for publish profile
               azureSubscription: 'azure-conn'   # <-- CHANGE THIS # for service connection
               appName: 'jdk17webapp'     # <-- CHANGE THIS
-              package: '$(Pipeline.Workspace)/$(artifactName)/**/*.jar'
+              #package: '$(Pipeline.Workspace)/$(artifactName)/**/*.jar'
+              #deploymentMethod: 'runFromPackage'
+              package: '$(Build.ArtifactStagingDirectory)/app.zip'
+              deploymentMethod: 'runFromPackage'
+              
